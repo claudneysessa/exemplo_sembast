@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class ModalidadeEntity {
   int? id;
   String? nome;
