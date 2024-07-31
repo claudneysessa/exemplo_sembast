@@ -21,7 +21,7 @@ class SembastService {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _databaseFactory!.openDatabase('medina_trainer');
+    _database = await _databaseFactory!.openDatabase('exemplo_sembast_trainer');
     return _database!;
   }
 }

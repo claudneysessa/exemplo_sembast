@@ -1,4 +1,4 @@
-import 'package:medina/commons/application_functions.dart';
+import 'package:exemplo_sembast/commons/application_functions.dart';
 import 'package:sembast/sembast.dart';
 
 import '../interfaces/dao_interface.dart';

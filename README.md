@@ -1,4 +1,4 @@
-# Media Trainer
+# Exemplo Sembast
 
 A new Flutter project.
 

@@ -2,10 +2,10 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
 import 'package:sembast/sembast_io.dart';
 
-import 'package:medina/domain/repositories/class_repository.dart';
-import 'package:medina/domain/repositories/user_repository.dart';
-import 'package:medina/infrastructure/data_access/dao/class_dao.dart';
-import 'package:medina/infrastructure/data_access/dao/user_dao.dart';
+import 'package:exemplo_sembast/domain/repositories/class_repository.dart';
+import 'package:exemplo_sembast/domain/repositories/user_repository.dart';
+import 'package:exemplo_sembast/infrastructure/data_access/dao/class_dao.dart';
+import 'package:exemplo_sembast/infrastructure/data_access/dao/user_dao.dart';
 
 import 'exemplos_isolados/exemplo_user.dart';
 import 'exemplos_isolados/exemplo_class.dart';
@@ -13,7 +13,7 @@ import 'exemplos_isolados/exemplo_class.dart';
 void main() async {
   Logger logger = Logger();
 
-  final dbPath = path.join(path.dirname(path.current), 'medina.sql3');
+  final dbPath = path.join(path.dirname(path.current), 'exemplo_sembast.sql3');
 
   logger.i('Caminho do banco de dados: $dbPath');
 

@@ -5,10 +5,10 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
 import 'package:sembast/sembast_io.dart';
 
-import 'package:medina/domain/repositories/class_repository.dart';
-import 'package:medina/domain/repositories/user_repository.dart';
-import 'package:medina/infrastructure/data_access/dao/class_dao.dart';
-import 'package:medina/infrastructure/data_access/dao/user_dao.dart';
+import 'package:exemplo_sembast/domain/repositories/class_repository.dart';
+import 'package:exemplo_sembast/domain/repositories/user_repository.dart';
+import 'package:exemplo_sembast/infrastructure/data_access/dao/class_dao.dart';
+import 'package:exemplo_sembast/infrastructure/data_access/dao/user_dao.dart';
 
 import 'exemplo_user.dart';
 import 'exemplo_class.dart';
@@ -16,7 +16,7 @@ import 'exemplo_class.dart';
 void main() async {
   Logger logger = Logger();
 
-  final dbPath = path.join(path.dirname(path.current), 'medina.sql3');
+  final dbPath = path.join(path.dirname(path.current), 'exemplo_sembast.sql3');
 
   logger.i('Caminho do banco de dados: $dbPath');
 
@@ -75,7 +75,7 @@ Este exemplo trabalha com arquivo fisicona estrutura do dispositivo
 
   final databaseFactory = databaseFactoryMemory;
   final database = await databaseFactory
-      .openDatabase('medina_memory'); // Abre o banco em memória
+      .openDatabase('exemplo_sembast_memory'); // Abre o banco em memória
 
 ```
 
@@ -111,7 +111,7 @@ Cria uma instância da DatabaseFactory databaseFactoryIo, que é responsável po
 final database = await databaseFactory.openDatabase(dbPath);
 ```
 
-Usa a databaseFactory para abrir o banco de dados com o nome 'medina.sql3' e o caminho definido em dbPath.
+Usa a databaseFactory para abrir o banco de dados com o nome 'exemplo_sembast.sql3' e o caminho definido em dbPath.
 
 O método openDatabase é assíncrono, então você precisa usar a palavra-chave await para esperar que o banco de dados seja aberto.
 
@@ -192,7 +192,7 @@ Cada classe tem uma responsabilidade única e bem definida. As entidades (User, 
 
 O código usa a biblioteca sembast para interagir com um banco de dados Sembast local.<br>
 O databaseFactoryIo é usado para abrir um banco de dados físico em disco.<br>
-O banco de dados é aberto usando o caminho dbPath, que é configurado para 'medina.sql3' no diretório atual.
+O banco de dados é aberto usando o caminho dbPath, que é configurado para 'exemplo_sembast.sql3' no diretório atual.
 
 ### 7. Repositórios
 

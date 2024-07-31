@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
-import 'package:medina/domain/repositories/class_repository.dart';
-import 'package:medina/entities/class_entity.dart';
+import 'package:exemplo_sembast/domain/repositories/class_repository.dart';
+import 'package:exemplo_sembast/entities/class_entity.dart';
 
 Future<void> exemploClass(
   Logger logger,

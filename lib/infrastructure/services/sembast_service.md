@@ -62,9 +62,9 @@ class SembastService {
     if (_database != null) return _database!;
 
     // Abre o banco de dados usando a fábrica definida
-    // com o nome 'medina_trainer'.
+    // com o nome 'exemplo_sembast_trainer'.
 
-    _database = await _databaseFactory!.openDatabase('medina_trainer');
+    _database = await _databaseFactory!.openDatabase('exemplo_sembast_trainer');
 
     // Retorna a instância do banco de dados.
 
