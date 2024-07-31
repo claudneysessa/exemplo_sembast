@@ -1,15 +1,19 @@
-class ClassEntity {
+import 'dart:ffi';
+
+class ModalidadeEntity {
   int? id;
   String? nome;
+  String? descricao;
   DateTime? data;
 
   set setId(int id) {
     id = id;
   }
 
-  ClassEntity({
+  ModalidadeEntity({
     this.id,
     this.nome,
+    this.descricao,
     this.data,
   });
 
@@ -17,6 +21,7 @@ class ClassEntity {
     return {
       'id': id,
       'nome': nome?.toUpperCase(),
+      'descricao': descricao,
       'data': data?.toIso8601String(),
     };
   }

@@ -5,13 +5,13 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
 import 'package:sembast/sembast_io.dart';
 
-import 'package:exemplo_sembast/domain/repositories/class_repository.dart';
-import 'package:exemplo_sembast/domain/repositories/user_repository.dart';
-import 'package:exemplo_sembast/infrastructure/data_access/dao/class_dao.dart';
-import 'package:exemplo_sembast/infrastructure/data_access/dao/user_dao.dart';
+import 'package:exemplo_sembast/domain/repositories/modalidade_repository.dart';
+import 'package:exemplo_sembast/domain/repositories/aluno_repository.dart';
+import 'package:exemplo_sembast/infrastructure/data_access/dao/modalidade_dao.dart';
+import 'package:exemplo_sembast/infrastructure/data_access/dao/aluno_dao.dart';
 
-import 'exemplo_user.dart';
-import 'exemplo_class.dart';
+import 'exemplo_aluno.dart';
+import 'exemplo_modalidade.dart';
 
 void main() async {
   Logger logger = Logger();
@@ -23,13 +23,13 @@ void main() async {
   final databaseFactory = databaseFactoryIo;
   final database = await databaseFactory.openDatabase(dbPath);
 
-  final userDAO = UserDAO(database);
-  final userRepository = UserRepository(userDAO);
-  await exemploUser(logger, userRepository);
+  final alunoDAO = AlunoDAO(database);
+  final alunoRepository = AlunoRepository(alunoDAO);
+  await exemploAluno(logger, alunoRepository);
 
-  final classDAO = ClassDAO(database);
-  final classRepository = ClassRepository(classDAO);
-  await exemploClass(logger, classRepository);
+  final modalidadeDAO = ModalidadeDAO(database);
+  final modalidadeRepository = ModalidadeRepository(modalidadeDAO);
+  await exemploModalidade(logger, modalidadeRepository);
 
   await database.close();
 }
@@ -131,17 +131,17 @@ Após o banco de dados ser aberto, você pode usar a instância database para re
 
 ### 3. Injeção de Dependência:
 
-- Localização: Ocorre nos construtores dos repositórios UserRepository e ClassRepository.
+- Localização: Ocorre nos construtores dos repositórios AlunoRepository e ModalidadeRepository.
 
 #### Explicação:
 
-- Os repositórios UserRepository e ClassRepository recebem as instâncias dos DAOs (userDAO e classDAO) como parâmetros no construtor. Isso significa que as dependências são injetadas no repositório no momento da criação.
+- Os repositórios AlunoRepository e ModalidadeRepository recebem as instâncias dos DAOs (AlunoDAO e ModalidadeDAO) como parâmetros no construtor. Isso significa que as dependências são injetadas no repositório no momento da criação.
 
 #### Exemplo:
 
 ```dart
-final userRepository = UserRepository(userDAO);
-final classRepository = ClassRepository(classDAO);
+final alunoRepository = AlunoRepository(alunoDAO);
+final modalidadeRepository = ModalidadeRepository(modalidadeDAO);
 ```
 
 ### 4. Inversão de Dependência:
@@ -158,15 +158,15 @@ A implementação do banco de dados pode ser trocada facilmente sem afetar o có
 
 ```dart
 
-// UserRepository
+// AlunoRepository
 
-class UserRepository {
-  final UserDAO _userDAO;
+class AlunoRepository {
+  final AlunoDAO _alunoDAO;
 
-  UserRepository(this._userDAO);
+  AlunoRepository(this._alunoDAO);
 
-  Future<int> insertUser(User user) async {
-    return await _userDAO.insert(user);
+  Future<int> insert(AlunoEntity alunoEnity) async {
+    return await _alunoDAO.insert(alunoEnity);
   }
 }
 
@@ -186,7 +186,7 @@ A Inversão de Dependência é um princípio fundamental do SOLID, que visa prom
 
 ### 5. Single Responsibility Principle (SRP)
 
-Cada classe tem uma responsabilidade única e bem definida. As entidades (User, Class) representam os dados, os DAOs interagem com o banco de dados, os repositórios encapsulam a lógica de acesso a dados, e os exemplos (exemploUser, exemploClass) demonstram o uso.
+Cada Modalidadee tem uma responsabilidade única e bem definida. As entidades (Aluno, Modalidade) representam os dados, os DAOs interagem com o banco de dados, os repositórios encapsulam a lógica de acesso a dados, e os exemplos (exemploAluno, exemploModalidade) demonstram o uso.
 
 ### 6. Banco de Dados Sembast
 
@@ -196,4 +196,4 @@ O banco de dados é aberto usando o caminho dbPath, que é configurado para 'exe
 
 ### 7. Repositórios
 
-Os repositórios UserRepository e ClassRepository fornecem uma interface mais abstrata para interagir com as entidades, escondendo a complexidade do banco de dados. Eles delegam as operações CRUD aos DAOs.
+Os repositórios AlunoRepository e ModalidadeRepository fornecem uma interface mais abstrata para interagir com as entidades, escondendo a complexidade do banco de dados. Eles delegam as operações CRUD aos DAOs.
