@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:path/path.dart' as path;
 import 'package:sembast/sembast_memory.dart';
 
 import 'package:exemplo_sembast/domain/repositories/modalidade_repository.dart';
@@ -12,10 +11,6 @@ import 'exemplos_isolados/exemplo_modalidade.dart';
 
 void main() async {
   Logger logger = Logger();
-
-  final dbPath = path.join(path.dirname(path.current), 'exemplo_sembast.sql3');
-
-  logger.i('Caminho do banco de dados: $dbPath');
 
   // Cria a fábrica de banco de dados em memória
   final databaseFactory = databaseFactoryMemory;
