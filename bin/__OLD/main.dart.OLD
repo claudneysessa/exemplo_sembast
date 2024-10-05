@@ -1,0 +1,87 @@
+import 'dart:convert';
+
+import 'infrastructure/services/sembast_service.dart';
+import 'package:logger/logger.dart';
+import 'package:sembast/sembast.dart';
+// import 'package:sembast/sembast_memory.dart';
+import 'domain/entities/ticker_entity.dart';
+import 'package:sembast/sembast_io.dart';
+import 'domain/repositories/aluno_repository.dart';
+import 'infrastructure/data_access/dao/ticker_dao.dart';
+import 'package:dio/dio.dart';
+
+void main() async {
+  Logger logger = Logger(
+    printer: PrettyPrinter(
+      stackTraceBeginIndex: 0, // Inicia a pilha de rastreamento
+      methodCount: 2, // Número de frames da pilha a serem exibidos
+      errorMethodCount: 8, // Número de frames da pilha para erros
+      lineLength: 2, // Tamanho máximo da linha
+      colors: true, // Habilita cores no log
+      printEmojis: true, // Habilita emojis no log
+      dateTimeFormat: DateTimeFormat.dateAndTime, // Imprime o tempo no log
+      noBoxingByDefault: false, // Não envolve em colchetes
+    ),
+    level: Level.debug,
+  );
+
+  try {
+    SembastService service = SembastService(
+      databaseFactory: databaseFactoryIo,
+      useCodec: true,
+    );
+
+    // SembastService service = SembastService(
+    //   databaseFactory: databaseFactoryMemory,
+    //   useCodec: true,
+    // );
+
+    Database database = await service.database;
+
+    final alunoDAO = AlunoDAO(database);
+    final alunoRepository = AlunoRepository(alunoDAO);
+
+    // Dio dio = Dio();
+
+    // // https://brapi.dev/api/quote/list
+    // var result = await dio.get<String>('https://brapi.dev/api/quote/list');
+
+    // var resultData = jsonDecode(result.data ?? "");
+
+    // for (var item in resultData['stocks']) {
+    //   await alunoRepository.insert(
+    //     TickerEntity(
+    //       stock: item['stock'],
+    //       name: item['name'],
+    //       logo: item['logo'],
+    //       sector: item['sector'],
+    //       type: item['type'],
+    //     ),
+    //   );
+    // }
+
+    final tickersList = await alunoRepository.getAll();
+
+    logger.i(
+      {
+        "message": "alunoRepository.getAll()",
+        "data": tickersList.map((aluno) => aluno.toMap()).toList()
+      },
+    );
+
+    await database.close();
+  } on DatabaseException catch (e) {
+    logger.e(
+      e,
+      time: DateTime.now(),
+      error: 'Erro ao acessar o banco de dados',
+      stackTrace: StackTrace.current,
+    );
+  } catch (e) {
+    logger.e(
+      e,
+      time: DateTime.now(),
+      stackTrace: StackTrace.current,
+    );
+  }
+}
