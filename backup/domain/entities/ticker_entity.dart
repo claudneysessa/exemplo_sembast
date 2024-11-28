@@ -1,4 +1,6 @@
-class TickerEntity {
+import '../interfaces/spalla_entity_interface.dart';
+
+class TickerEntity implements ISpallaEntity {
   int? id;
   String? stock;
   String? name;
@@ -37,5 +39,17 @@ class TickerEntity {
       'sector': sector,
       'type': type,
     };
+  }
+
+  @override
+  List<String> getProperties() {
+    return [
+      'id',
+      'stock',
+      'name',
+      'logo',
+      'sector',
+      'type',
+    ];
   }
 }

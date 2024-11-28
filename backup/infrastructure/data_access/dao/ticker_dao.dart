@@ -5,14 +5,26 @@ import '../interfaces/dao_interface.dart';
 import '../../../domain/entities/ticker_entity.dart';
 
 class TickerDAO implements IDAO<TickerEntity> {
-  final _store = intMapStoreFactory.store('ticker');
   final Database _database;
+
+  StoreRef<int, Map<String, Object?>> getStore(String storeName) {
+    return intMapStoreFactory.store(storeName);
+  }
+
+  @override
+  get tableName => 'tiker';
+  @override
+  get primaryKey => ['id'];
+  @override
+  get database => _database;
+  @override
+  get store => getStore(tableName);
 
   TickerDAO(this._database);
 
   @override
   Future<int> getNextId() async {
-    final tickersList = await _store.find(_database);
+    final tickersList = await store.find(database);
     if (tickersList.isEmpty) {
       return 1; // Se não houver registros, o próximo ID é 1
     } else {
@@ -25,7 +37,7 @@ class TickerDAO implements IDAO<TickerEntity> {
   @override
   Future<int> insert(TickerEntity tickerEntity) async {
     tickerEntity.id ??= await getNextId();
-    return await _store.add(
+    return await store.add(
       _database,
       tickerEntity.toMap(),
     );
@@ -51,14 +63,14 @@ class TickerDAO implements IDAO<TickerEntity> {
       ),
     );
 
-    final tickerData = await _store.findFirst(
+    final tickerData = await store.findFirst(
       _database,
       finder: finder,
     );
 
     if (tickerData != null) {
       final recordId = tickerData.key;
-      await _store.record(recordId).update(
+      await store.record(recordId).update(
             _database,
             tickerEntity.toMap(),
           );
@@ -82,7 +94,7 @@ class TickerDAO implements IDAO<TickerEntity> {
       ),
     );
 
-    final tickerData = await _store.findFirst(
+    final tickerData = await store.findFirst(
       _database,
       finder: finder,
     );
@@ -92,7 +104,7 @@ class TickerDAO implements IDAO<TickerEntity> {
       final recordId = tickerData.key;
 
       // Deletar o registro
-      await _store.record(recordId).delete(_database);
+      await store.record(recordId).delete(_database);
     }
   }
 
@@ -105,7 +117,7 @@ class TickerDAO implements IDAO<TickerEntity> {
 
   @override
   Future<void> deleteByKey(int tickerKey) async {
-    await _store.record(tickerKey).delete(_database);
+    await store.record(tickerKey).delete(_database);
   }
 
   @override
@@ -118,7 +130,7 @@ class TickerDAO implements IDAO<TickerEntity> {
       ),
     ); // Use 'id' como String
 
-    final tickerData = await _store.findFirst(
+    final tickerData = await store.findFirst(
       _database,
       finder: finder,
     );
@@ -128,13 +140,13 @@ class TickerDAO implements IDAO<TickerEntity> {
       final recordId = tickerData.key;
 
       // Deletar o registro
-      await _store.record(recordId).delete(_database);
+      await store.record(recordId).delete(_database);
     }
   }
 
   @override
   Future<List<TickerEntity>> getAll() async {
-    final tickersList = await _store.find(_database);
+    final tickersList = await store.find(_database);
     return tickersList
         .map(
           (tickerData) => TickerEntity(
@@ -154,7 +166,7 @@ class TickerDAO implements IDAO<TickerEntity> {
     String fieldName,
     dynamic fieldValue,
   ) async {
-    final tickersList = await _store.find(_database);
+    final tickersList = await store.find(_database);
 
     // Filtrar localmente por nome
     final filtrotickers = tickersList
@@ -190,7 +202,7 @@ class TickerDAO implements IDAO<TickerEntity> {
       ),
     );
 
-    final tickerData = await _store.findFirst(
+    final tickerData = await store.findFirst(
       _database,
       finder: finder,
     );

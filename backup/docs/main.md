@@ -10,8 +10,8 @@ import 'package:exemplo_sembast/domain/repositories/aluno_repository.dart';
 import 'package:exemplo_sembast/infrastructure/data_access/dao/modalidade_dao.dart';
 import 'package:exemplo_sembast/infrastructure/data_access/dao/aluno_dao.dart';
 
-import 'exemplo_aluno.dart';
-import 'exemplo_modalidade.dart';
+import '../../bin/docs/exemplo_aluno.dart';
+import '../../bin/docs/exemplo_modalidade.dart';
 
 void main() async {
   Logger logger = Logger();
