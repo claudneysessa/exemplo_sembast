@@ -1,129 +1,54 @@
-import 'dart:convert';
-
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:logger/logger.dart';
+import 'package:spalla_core_framework/spalla_api_request/spalla_api_request.dart';
 
-import 'domain/models/pessoa_model.dart';
-import 'funcoes_data.dart';
+Future<void> init() async {
+  await initializeDateFormatting('pt_BR');
+}
 
 void main() async {
-  await initializeDateFormatting('pt_BR');
+  await init();
 
-  String jsonStr1 = '''
-   {
-     "id" : 1,
-     "first_name" : "Claudney",
-     "last_name" : "Sessa",
-     "date_of_birth" : "1984-07-06 10:51:12"
-   }
-  ''';
+  var logger = Logger(
+    printer: PrettyPrinter(
+      noBoxingByDefault: false,
+      printEmojis: false,
+      dateTimeFormat: DateTimeFormat.dateAndTime,
+      stackTraceBeginIndex: 0,
+    ),
+  );
 
-  String jsonStr2 = '''
-   {
-     "first_name" : "Claudney",
-     "date_of_birth" : "1984-07-06 00:00:00"
-   }
-  ''';
+  SpallaApiDioService spallaDioService = SpallaApiDioService();
 
-  String jsonStr3 = '''
-   {
-     "date_of_birth" : "1984-07-06 00:00:00"
-   }
-  ''';
+  var requestRepository = SpallaApiRequestRepository(
+    spallaDioService,
+    baseUrl: 'https://192.168.0.12:55008',
+    //userName: 'CLAUDNEY',
+    //userPassword: 'DBM',
+    userToken: 'aab3238922bcc25a6f606eb525ffdc56',
+    //apiToken: 'SPA#1991000000001',
+    debugMode: true,
+  );
 
-  try {
-    DateTime? data;
+  var result =
+      await requestRepository.functionRequest(requestBody: <String, dynamic>{
+    "id": "",
+    "version": "1.0.0",
+    "method": "GET",
+    "objectType": "TABLE",
+    "objectName": "GRUPO",
+    "where": [
+      {
+        "type": "Field",
+        "name": "GP_COD",
+        "value": 1,
+      }
+    ],
+    "limit": 0,
+    "offset": 0,
+    "orderBy": ['GP_COD'],
+  });
 
-    // Data PtBr
-    data = FuncoesData.convertStringPtBrToDateTime(
-      '25/11/2024 15:52:23',
-    );
-
-    // ignore: avoid_print
-    print(data);
-
-    // ignore: avoid_print
-    print(FuncoesData.convertDateTimeToStringPtBr(data));
-
-    // ignore: avoid_print
-    print(FuncoesData.escreverDataPorExtenso(data));
-  } catch (e) {
-    // ignore: avoid_print
-    print(e);
-  }
-
-  try {
-    DateTime? data;
-
-    // Data Sybase
-    data = FuncoesData.convertStringPtBrToDateTime(
-      '2024-07-06 15:52:23',
-      formato: MascaraFormatoData.sybaseDataFormat,
-      locale: "pt_BR",
-    );
-
-    // ignore: avoid_print
-    print(data);
-
-    // ignore: avoid_print
-    print(FuncoesData.convertDateTimeToStringPtBr(data));
-
-    // ignore: avoid_print
-    print(FuncoesData.escreverDataPorExtenso(data));
-  } catch (e) {
-    // ignore: avoid_print
-    print(e);
-  }
-
-  try {
-    DateTime? data;
-
-    // Data Iso8601
-    data = FuncoesData.convertStringPtBrToDateTime(
-      '2024-07-06T15:52:23',
-      formato: MascaraFormatoData.iso8601DataFormat,
-      locale: "pt_BR",
-    );
-
-    // ignore: avoid_print
-    print(data);
-
-    // ignore: avoid_print
-    print(FuncoesData.convertDateTimeToStringPtBr(data));
-
-    // ignore: avoid_print
-    print(FuncoesData.escreverDataPorExtenso(data));
-  } catch (e) {
-    // ignore: avoid_print
-    print(e);
-  }
-
-  try {
-    PessoaModel pessoa = PessoaModel.fromJson(json.decode(jsonStr1));
-
-    // ignore: avoid_print
-    print(pessoa.toJson());
-  } catch (e) {
-    // ignore: avoid_print
-    print(e);
-  }
-
-  try {
-    PessoaModel pessoa = PessoaModel.fromJson(json.decode(jsonStr2));
-
-    // ignore: avoid_print
-    print(pessoa.toJson());
-  } catch (e) {
-    // ignore: avoid_print
-    print(e);
-  }
-
-  try {
-    PessoaModel pessoa = PessoaModel.fromJson(json.decode(jsonStr3));
-
-    // ignore: avoid_print
-    print(pessoa.toJson());
-  } catch (e) {
-    // ignore: avoid_print
-    print(e);
-  }
+  logger.i(result.runtimeType);
+  logger.i(result);
 }
